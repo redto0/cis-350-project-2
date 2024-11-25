@@ -262,9 +262,7 @@ class BT {
         // Your code here
         Node j = w.right;
         if (j == null) return w;
-        while(j != null){
-            j = j.right;
-        }
+        j = j.right;
         return j;
     }
 
@@ -351,14 +349,15 @@ class CompleteBT extends BT {
     // PRECONDITION:
     // POSTCONDITION:
     public Node add(Elem e) {
-        // NAME: <your name here>
+        // NAME: <Aleaxander Boccaccio>
         // Your code here
-        Node w = this.root;
+        Node w = new Node(e);
         // right child is greater than root
-
-
+        w = this.getNewLastNode();
+        this.lastNode = w;
 
         // TODO sort w into the system.
+        this.n++;
         return w;
     }
 
@@ -368,16 +367,22 @@ class CompleteBT extends BT {
     public Elem remove() {
         // NAME: <your name here>
         // Your code here
+        Node out = this.root;
 
+        return out.elem;
     }
 
     // OUTPUT: the node in the complete BT where any new node inserted would be placed
     // PRECONDITION:
     // POSTCONDITION:
     private Node getParentOfNewLastNode() {
-        // NAME: <your name here>
+        // NAME: <Alexander Boccaccio>
         // Your code here
-
+        // return where the next new node should be placed
+        // so we place in the last spot
+        this.root;
+        //this.n
+        //return new Node();
     }
 
     // OUTPUT: the node in the BT that would become the last node of the complete BT should the last node be removed
@@ -387,6 +392,7 @@ class CompleteBT extends BT {
         // NAME: <your name here>
         // Your code here
 
+        //return new Node();
     }
 
 }
