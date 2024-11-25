@@ -339,7 +339,16 @@ class BT {
 class CompleteBT extends BT {
 
     public Node lastNode;
-
+    public Object CalulateDept(int n){
+        int dept = 0;
+        if( n == 0 ) return null;
+        int bound = 0;
+        while (bound < n ){
+            dept++;
+            bound += 2 ^ dept;
+        }
+        return dept;
+    }
     public CompleteBT() {
         lastNode = null;
     }
