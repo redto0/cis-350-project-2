@@ -369,12 +369,12 @@ class CompleteBT extends BT {
     public Node add(Elem e) {
         // NAME: <Aleaxander Boccaccio>
         // Your code here
-        Node w = new Node(e);
         // right child is greater than root
-        w = this.getNewLastNode();
-        this.lastNode = w;
 
-        // TODO sort w into the system.
+        // Node(Elem e, Node l, Node r, Node p) {
+        Node p = this.getNewLastNode().parent;
+        Node w = new Node(e, null, null, p);
+        this.lastNode = w;
         this.n++;
         return w;
     }
@@ -386,8 +386,30 @@ class CompleteBT extends BT {
         // NAME: <your name here>
         // Your code here
         Node out = this.root;
-
-        return out.elem;
+        Elem outElem = this.root.elem;
+        // idc to find if this exist as a function lol
+        // assgin the last element to null
+        if(this.lastNode.parent.right == null) {
+            this.lastNode.left = null;
+        } else {
+            this.lastNode.parent.right = null;
+        }
+        // assgin the root's children to the last node
+        if(this.root.left != null) {
+            // make sure that right isn't null
+            this.lastNode.left = this.root.left;
+        }
+        if (this.root.right != null ){
+            // make sure that left isn't null
+            this.lastNode.right = this.root.right;
+        }
+        // assgin the root to the last node
+        this.root = this.lastNode;
+        // Root is gone remove adjust count
+        this.n--;
+        // assign the next last node
+        this.lastNode = this.getNewLastNode();
+        return outElem;
     }
 
     // OUTPUT: the node in the complete BT where any new node inserted would be placed
@@ -398,10 +420,46 @@ class CompleteBT extends BT {
         // Your code here
         // return where the next new node should be placed
         // so we place in the last spot
-        this.root;
+
+        //assuing this.last node is not the root it seems...
+        Node w = this.lastNode;
+        if(this.lastNode.parent.left == this.lastNode){
+            // then the next spot is the right node of the last node
+            return this.lastNode.parent;
+        }
+        // this is if the last Node happens to be the last Node in which
+        if ( this.n == this.CalulateTotal( (int) this.CalulateDept(n) ) ){
+            // this is the last node of its branch
+            Node p =this.lastLeftDescendant( this.root );
+            return p;
+        }
+        if (this.last )
+
+
+
+        int dept = (int) this.CalulateDept(this.n);
+        Node Start = this.root;
+        dept--;
+        int n = this.n - CalulateTotal(dept - 1);
+        double deptAdment;
+        while (dept > 1){
+            dept--;
+            deptAdment = (double) CalulateTotalonLevel(dept) / 2;
+            if( n > deptAdment) {
+
+            }
+        }
         // we do math lol
+        // didnt like this
         //this.n
-        //return new Node();
+        return new Node();
+    }
+    // because sometimes math can be hard for people
+    public int CalulateTotal(int numb){
+        return (2 ^ (numb + 1)) - 1;
+    }
+    public int CalulateTotalonLevel(int numb){
+        return (2 ^ (numb);
     }
 
     // OUTPUT: the node in the BT that would become the last node of the complete BT should the last node be removed
@@ -410,6 +468,7 @@ class CompleteBT extends BT {
     private Node getNewLastNode() {
         // NAME: <Alexander Boccaccio>
         // Your code here
+        int Dept = (int) CalulateDept(this.n);
 
         //return new Node();
     }
