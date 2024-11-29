@@ -244,12 +244,17 @@ class BT {
     public Node lastLeftDescendant(Node w) {
         // NAME: <Alexander Boccaccio>
         // Your code here
-        Node j = w.left;
+        Node j = w;
+        Node p = j;
         if (j == null) return w;
         while(j != null){
+            p = j;
             j = j.left;
         }
-        return j;
+        return p;
+    }
+    public boolean isALeftChild(Node W){
+        if( )
     }
 
     // INPUT: a node w in a BT
@@ -390,6 +395,7 @@ class CompleteBT extends BT {
         // return where the next new node should be placed
         // so we place in the last spot
         this.root;
+        // we do math lol
         //this.n
         //return new Node();
     }
@@ -398,7 +404,7 @@ class CompleteBT extends BT {
     // PRECONDITION:
     // POSTCONDITION:
     private Node getNewLastNode() {
-        // NAME: <your name here>
+        // NAME: <Alexander Boccaccio>
         // Your code here
 
         //return new Node();
