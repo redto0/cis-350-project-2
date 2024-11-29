@@ -176,6 +176,7 @@ class BT {
     // PRECONDITION: w and z non-NULL
     // POSTCONDITION: w and z swap their elements
     public void swapElem(Node w, Node z) {
+        // just swaps values not places...
         Elem tmp = w.elem;
         w.elem = z.elem;
         z.elem = tmp;
@@ -244,17 +245,13 @@ class BT {
     public Node lastLeftDescendant(Node w) {
         // NAME: <Alexander Boccaccio>
         // Your code here
-        Node j = w;
-        Node p = j;
-        if (j == null) return w;
+        Node j = w; // test pointer
+        Node p = j; // actual pointer
         while(j != null){
-            p = j;
-            j = j.left;
+            p = j;      // protect the main pointer
+            j = j.left; // the child is sacrificed
         }
-        return p;
-    }
-    public boolean isALeftChild(Node W){
-        if( )
+        return p;       // return the pure pointer
     }
 
     // INPUT: a node w in a BT
@@ -265,10 +262,17 @@ class BT {
     public Node firstRightAncestor(Node w) {
         // NAME: <Alexander Boccaccio>
         // Your code here
-        Node j = w.right;
-        if (j == null) return w;
-        j = j.right;
-        return j;
+
+        if(w == this.root){
+            return w;
+        }
+        while (w.parent.right != w){// check to see if w is the right child of this parent
+            if(w.parent == this.root) return w.parent;
+            w = w.parent;
+
+        }
+        return w; // if w is the right child of its parent then return w;
+
     }
 
     // INPUT: a node w in a BT
