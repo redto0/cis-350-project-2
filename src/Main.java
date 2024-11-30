@@ -514,6 +514,7 @@ class CompleteBT extends BT {
             }
 
         }
+            // this left is annoying
         }
         //return new Node();
     }
