@@ -374,8 +374,12 @@ class CompleteBT extends BT {
         // right child is greater than root
 
         // Node(Elem e, Node l, Node r, Node p) {
-        Node p = this.getNewLastNode().parent;
         Node w = new Node(e, null, null, p);
+        if(p.left != null){
+            p.right = w;
+        } else {
+            p.left = w;
+        }
         this.lastNode = w;
         this.n++;
         return w;
