@@ -389,7 +389,6 @@ class CompleteBT extends BT {
     // PRECONDITION:
     // POSTCONDITION:
     public Elem remove() {
-        // NAME: <your name here>
         // Your code here
         Node out = this.root;
         Elem outElem = this.root.elem;
