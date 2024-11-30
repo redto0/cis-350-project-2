@@ -506,7 +506,7 @@ class CompleteBT extends BT {
             Node p = this.firstLeftAncestor(this.lastNode);
             // then we step left to go down the other path;
             p = p.left;
-            // then we go as far right as possible (like the euros)
+            // then we go as far right as possible 
             while(p.right != null){
 
                 // I know there is a function already, but I don't like it, and it isn't required to do so
