@@ -541,7 +541,6 @@ class Heap extends CompleteBT {
     // PRECONDITION:
     // POSTCONDITION:
     public Elem min() {
-        // NAME: <your name here>
         // NAME: <Alexander Boccaccio>
         // Your code here
         return this.root.elem;
