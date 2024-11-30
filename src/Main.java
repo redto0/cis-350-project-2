@@ -50,6 +50,9 @@ class Key {
     public boolean isLessThan (Key y) {
         return ((this.price < y.price) || ((this.price == y.price) && (this.timeStamp < y.timeStamp)));
     }
+    public static boolean isLessThan(Key z, Key y) {
+        return ((z.price < y.price) || ((z.price == y.price) && (z.timeStamp < y.timeStamp)));
+    }
 }
 
 
@@ -118,6 +121,9 @@ class Elem {
     // PRECONDITION: input properly initialized (each element's key is non-NULL)
     public boolean isLessThan (Elem y) {
         return (this.key.isLessThan(y.key));
+    }
+    public boolean isLessThan (Elem z, Elem y) {
+        return (Key.isLessThan(z.key, y.key));
     }
     // greater-than comparison operator for elements
     // INPUT: element y
@@ -374,6 +380,12 @@ class CompleteBT extends BT {
         // right child is greater than root
 
         // Node(Elem e, Node l, Node r, Node p) {
+        if (this.root == null){
+            this.root = new Node(e, null, null, null);
+            this.lastNode = this.root;
+            return this.root;
+        }
+        Node p = this.getParentOfNewLastNode();
         Node w = new Node(e, null, null, p);
         if(p.left != null){
             p.right = w;
@@ -512,18 +524,16 @@ class CompleteBT extends BT {
             p = p.left;
             // then we go as far right as possible 
             while(p.right != null){
-
                 // I know there is a function already, but I don't like it, and it isn't required to do so
                 p = p.right;
             }
+            return p;
 
         }
             // this left is annoying
-        }
         //return new Node();
     }
 
-}
 
 // Heap data-structure implementation of a priority queue ADT
 class Heap extends CompleteBT {
@@ -551,7 +561,8 @@ class Heap extends CompleteBT {
     public void removeMin() {
         // NAME: <your name here>
         // Your code here
-
+        this.remove();
+        this.downHeapBubbling();
     }
 
     // PRECONDITION:
@@ -559,6 +570,15 @@ class Heap extends CompleteBT {
     private void upHeapBubbling() {
         // NAME: <your name here>
         // Your code here
+        // from last node up basically
+        Node p = this.lastNode;
+        while (p.parent != null){
+            // comparison???
+            Node z = p.parent;
+            if( p.elem.isGreaterThan(p.parent.elem)){
+                swapElem(p, p.parent);
+            }
+        }
 
     }
 
@@ -567,7 +587,19 @@ class Heap extends CompleteBT {
     private void downHeapBubbling() {
         // NAME: <your name here>
         // Your code here
-
+        Node p = this.root;
+        // it is proabably redunant to have this twice, but it works
+        if(p.elem.isGreaterThan(p.left.elem)){
+            swapElem(p, p.left);
+            while (p.elem.isGreaterThan(p.left.elem)){
+                swapElem(p, p.left);
+            }
+        } else if (p.elem.isGreaterThan(p.right.elem)){
+            swapElem(p, p.right);
+            while (p.elem.isGreaterThan(p.right.elem)){
+                swapElem(p, p.right);
+            }
+        }
     }
 }
 
