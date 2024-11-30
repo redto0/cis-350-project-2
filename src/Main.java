@@ -194,7 +194,7 @@ class BT {
 
     /*
       # INPUT: a node w in the BT or NULL;
-      # ancestor type flag: True iff searching for youngest left ancestor
+      # ancestor type flag: True if searching for youngest left ancestor
       # OUTPUT: the node corresponding to the youngest right/left ancestor
       # of w: this is the node x in the tree
       # that is the first ancestor of w whose immediate descendant is a
@@ -208,6 +208,7 @@ class BT {
         if (w == null) return null;
         Node z = w;
         Node x = z.parent;
+        // while x is not null && if check left is true then check if x.left eqauls Z else check if right equals Z
         while ((x != null) && ((check_left ? x.right : x.left) == z)) {
             z = x;
             x = z.parent;
@@ -266,11 +267,12 @@ class BT {
         if(w == this.root){
             return w;
         }
-        while (w.parent.right != w){// check to see if w is the right child of this parent
+        while (w.parent.left != w){// check to see if w is the right child of this parent
             if(w.parent == this.root) return w.parent;
             w = w.parent;
 
         }
+        // return youngestAncestorType(w,false);
         return w; // if w is the right child of its parent then return w;
 
     }
@@ -422,6 +424,8 @@ class CompleteBT extends BT {
         // so we place in the last spot
 
         //assuing this.last node is not the root it seems...
+        if(this.lastNode == null) this.lastNode = this.root;
+
         Node w = this.lastNode;
         if(this.lastNode.parent.left == this.lastNode){
             // then the next spot is the right node of the last node
@@ -432,11 +436,17 @@ class CompleteBT extends BT {
             // this is the last node of its branch
             Node p =this.lastLeftDescendant( this.root );
             return p;
+        } else {
+            // if (this.lastNode)
+            Node p = this.firstLeftAncestor(w);
+            p = p.right;
+            while (p.left != null){
+                p = p.left;
+            }
+            return p;
         }
-        if (this.last )
 
-
-
+        /*
         int dept = (int) this.CalulateDept(this.n);
         Node Start = this.root;
         dept--;
@@ -444,7 +454,7 @@ class CompleteBT extends BT {
         double deptAdment;
         while (dept > 1){
             dept--;
-            deptAdment = (double) CalulateTotalonLevel(dept) / 2;
+            deptAdment = (double) CalulateTotalAtLevel(dept) / 2;
             if( n > deptAdment) {
 
             }
@@ -453,23 +463,58 @@ class CompleteBT extends BT {
         // didnt like this
         //this.n
         return new Node();
+        */
     }
+
     // because sometimes math can be hard for people
     public int CalulateTotal(int numb){
         return (2 ^ (numb + 1)) - 1;
     }
-    public int CalulateTotalonLevel(int numb){
-        return (2 ^ (numb);
+    public int CalulateTotalAtLevel(int numb){
+        return (2 ^ (numb));
     }
 
     // OUTPUT: the node in the BT that would become the last node of the complete BT should the last node be removed
-    // PRECONDITION:
-    // POSTCONDITION:
+    // PRECONDITION:    has the node been removed yet? probably so last node has a null element but a valid pointer in the structure
+    // POSTCONDITION:   we return last node (booooo) but it's ok if we need to still delete the other node
+    //                  it can have a global pointer before this mess
     private Node getNewLastNode() {
         // NAME: <Alexander Boccaccio>
         // Your code here
-        int Dept = (int) CalulateDept(this.n);
 
+        // this is the one to remove, and remember, no pointers!
+
+
+        int Dept = (int) CalulateDept(this.n);
+        if (this.root == null){
+            return null;
+        } if (this.lastNode == null){
+            return this.root;
+        } else if ( this.n == this.CalulateTotal( (int) this.CalulateDept(n)) + 1 ) {
+            // then can we assume that this is the last node of its level, and we need to step back to the last one
+            Node p = this.root;
+            while (p.right != null){
+                p = p.right;
+            }
+            return p;
+        }else if ( this.lastNode == this.lastNode.parent.right){
+            // we find that p is the right child so we can pass the trouch to the left child
+            return this.lastNode.parent.left;
+        }else{
+            // we manually find it (normal case) and p is a left child
+            // we find the first node that is left of p
+            Node p = this.firstLeftAncestor(this.lastNode);
+            // then we step left to go down the other path;
+            p = p.left;
+            // then we go as far right as possible (like the euros)
+            while(p.right != null){
+
+                // I know there is a function already, but I don't like it, and it isn't required to do so
+                p = p.right;
+            }
+
+        }
+        }
         //return new Node();
     }
 
