@@ -531,9 +531,10 @@ class Heap extends CompleteBT {
     // PRECONDITION:
     // POSTCONDITION:
     public void insert(Elem e) {
-        // NAME: <your name here>
+        // NAME: <Alexander Boccaccio>
         // Your code here
-
+        this.add(e);
+        this.upHeapBubbling();
     }
 
     // OUTPUT: the minimum (highest priority) element of the heap
