@@ -228,7 +228,7 @@ class BT {
       # OUTPUT: a node corresponding to the youngest left/right descendant
       # of w, inclusive: this is the node x in the tree
       # that is the last left/right descendant of w, depending on input
-      # type flag); or NULL if w is NULL
+      # type flag; or NULL if w is NULL
     */
     public Node youngestDescendantType(Node w, boolean check_left) {
         if (w == null) return null;
@@ -273,7 +273,7 @@ class BT {
         if(w == this.root){
             return w;
         }
-        while (w.parent.left != w){// check to see if w is the right child of this parent
+        while (w.parent.left != w){ // check to see if w is the right child of this parent
             if(w.parent == this.root) return w.parent;
             w = w.parent;
 
@@ -356,16 +356,18 @@ class BT {
 class CompleteBT extends BT {
 
     public Node lastNode;
-    public Object CalulateDept(int n){
+
+    public Object CalulateDept(int n) {
         int dept = 0;
-        if( n == 0 ) return null;
+        if (n == 0) return null;
         int bound = 0;
-        while (bound < n ){
+        while (bound < n) {
             dept++;
             bound += 2 ^ dept;
         }
         return dept;
     }
+
     public CompleteBT() {
         lastNode = null;
     }
@@ -380,14 +382,15 @@ class CompleteBT extends BT {
         // right child is greater than root
 
         // Node(Elem e, Node l, Node r, Node p) {
-        if (this.root == null){
+        if (this.root == null) {
             this.root = new Node(e, null, null, null);
             this.lastNode = this.root;
             return this.root;
         }
+
         Node p = this.getParentOfNewLastNode();
         Node w = new Node(e, null, null, p);
-        if(p.left != null){
+        if (p.left != null) {
             p.right = w;
         } else {
             p.left = w;
@@ -407,17 +410,17 @@ class CompleteBT extends BT {
         Elem outElem = this.root.elem;
         // idc to find if this exist as a function lol
         // assgin the last element to null
-        if(this.lastNode.parent.right == null) {
+        if (this.lastNode.parent.right == null) {
             this.lastNode.left = null;
         } else {
             this.lastNode.parent.right = null;
         }
         // assgin the root's children to the last node
-        if(this.root.left != null) {
+        if (this.root.left != null) {
             // make sure that right isn't null
             this.lastNode.left = this.root.left;
         }
-        if (this.root.right != null ){
+        if (this.root.right != null) {
             // make sure that left isn't null
             this.lastNode.right = this.root.right;
         }
@@ -440,53 +443,43 @@ class CompleteBT extends BT {
         // so we place in the last spot
 
         //assuing this.last node is not the root it seems...
-        if(this.lastNode == null) this.lastNode = this.root;
+        if (this.lastNode == null) this.lastNode = this.root;
+        if (this.lastNode == this.root){
+            return this.lastNode.left;
+        }
 
         Node w = this.lastNode;
-        if(this.lastNode.parent.left == this.lastNode){
-            // then the next spot is the right node of the last node
-            return this.lastNode.parent;
+        if (this.lastNode.parent.left != null) {
+            if (this.lastNode.parent.left == this.lastNode) {
+                // then the next spot is the right node of the last node
+                return this.lastNode.parent;
+            }
         }
         // this is if the last Node happens to be the last Node in which
-        if ( this.n == this.CalulateTotal( (int) this.CalulateDept(n) ) ){
+        if (this.n == this.CalulateTotal((int) this.CalulateDept(n))) {
             // this is the last node of its branch
-            Node p =this.lastLeftDescendant( this.root );
+            Node p = this.lastLeftDescendant(this.root);
             return p;
         } else {
             // if (this.lastNode)
             Node p = this.firstLeftAncestor(w);
-            p = p.right;
-            while (p.left != null){
+            if (p.right != null) {
+                p = p.right;
+            }
+            while (p.left != null) {
                 p = p.left;
             }
             return p;
         }
 
-        /*
-        int dept = (int) this.CalulateDept(this.n);
-        Node Start = this.root;
-        dept--;
-        int n = this.n - CalulateTotal(dept - 1);
-        double deptAdment;
-        while (dept > 1){
-            dept--;
-            deptAdment = (double) CalulateTotalAtLevel(dept) / 2;
-            if( n > deptAdment) {
-
-            }
-        }
-        // we do math lol
-        // didnt like this
-        //this.n
-        return new Node();
-        */
     }
 
     // because sometimes math can be hard for people
-    public int CalulateTotal(int numb){
+    public int CalulateTotal(int numb) {
         return (2 ^ (numb + 1)) - 1;
     }
-    public int CalulateTotalAtLevel(int numb){
+
+    public int CalulateTotalAtLevel(int numb) {
         return (2 ^ (numb));
     }
 
@@ -502,430 +495,415 @@ class CompleteBT extends BT {
 
 
         int Dept = (int) CalulateDept(this.n);
-        if (this.root == null){
+        if (this.root == null) {
             return null;
-        } if (this.lastNode == null){
+        }
+        if (this.lastNode == null) {
             return this.root;
-        } else if ( this.n == this.CalulateTotal( (int) this.CalulateDept(n)) + 1 ) {
+        } else if (this.n == this.CalulateTotal((int) this.CalulateDept(n)) + 1) {
             // then can we assume that this is the last node of its level, and we need to step back to the last one
             Node p = this.root;
-            while (p.right != null){
+            while (p.right != null) {
                 p = p.right;
             }
             return p;
-        }else if ( this.lastNode == this.lastNode.parent.right){
+        } else if (this.lastNode == this.lastNode.parent.right) {
             // we find that p is the right child so we can pass the trouch to the left child
             return this.lastNode.parent.left;
-        }else{
+        } else {
             // we manually find it (normal case) and p is a left child
             // we find the first node that is left of p
             Node p = this.firstLeftAncestor(this.lastNode);
             // then we step left to go down the other path;
             p = p.left;
             // then we go as far right as possible 
-            while(p.right != null){
+            while (p.right != null) {
                 // I know there is a function already, but I don't like it, and it isn't required to do so
                 p = p.right;
             }
             return p;
 
         }
-            // this left is annoying
+        // this left is annoying
         //return new Node();
     }
-
-
-// Heap data-structure implementation of a priority queue ADT
-class Heap extends CompleteBT {
-    // INPUT: an element e to be inserted in the heap
-    // PRECONDITION:
-    // POSTCONDITION:
-    public void insert(Elem e) {
-        // NAME: <Alexander Boccaccio>
-        // Your code here
-        this.add(e);
-        this.upHeapBubbling();
-    }
-
-    // OUTPUT: the minimum (highest priority) element of the heap
-    // PRECONDITION:
-    // POSTCONDITION:
-    public Elem min() {
-        // NAME: <Alexander Boccaccio>
-        // Your code here
-        return this.root.elem;
-    }
-
-    // PRECONDITION:
-    // POSTCONDITION:
-    public void removeMin() {
-        // NAME: <your name here>
-        // Your code here
-        this.remove();
-        this.downHeapBubbling();
-    }
-
-    // PRECONDITION:
-    // POSTCONDITION:
-    private void upHeapBubbling() {
-        // NAME: <your name here>
-        // Your code here
-        // from last node up basically
-        Node p = this.lastNode;
-        while (p.parent != null){
-            // comparison???
-            Node z = p.parent;
-            if( p.elem.isGreaterThan(p.parent.elem)){
-                swapElem(p, p.parent);
-            }
-        }
-
-    }
-
-    // PRECONDITION:
-    // POSTCONDITION:
-    private void downHeapBubbling() {
-        // NAME: <your name here>
-        // Your code here
-        Node p = this.root;
-        // it is proabably redunant to have this twice, but it works
-        if(p.elem.isGreaterThan(p.left.elem)){
-            swapElem(p, p.left);
-            while (p.elem.isGreaterThan(p.left.elem)){
-                swapElem(p, p.left);
-            }
-        } else if (p.elem.isGreaterThan(p.right.elem)){
-            swapElem(p, p.right);
-            while (p.elem.isGreaterThan(p.right.elem)){
-                swapElem(p, p.right);
-            }
-        }
-    }
 }
+
+    // Heap data-structure implementation of a priority queue ADT
+    class Heap extends CompleteBT {
+        // INPUT: an element e to be inserted in the heap
+        // PRECONDITION:
+        // POSTCONDITION:
+        public void insert(Elem e) {
+            // NAME: <Alexander Boccaccio>
+            // Your code here
+            this.add(e);
+            this.upHeapBubbling();
+        }
+
+        // OUTPUT: the minimum (highest priority) element of the heap
+        // PRECONDITION:
+        // POSTCONDITION:
+        public Elem min() {
+            // NAME: <Alexander Boccaccio>
+            // Your code here
+            return this.root.elem;
+        }
+
+        // PRECONDITION:
+        // POSTCONDITION:
+        public void removeMin() {
+            // NAME: <your name here>
+            // Your code here
+            this.remove();
+            this.downHeapBubbling();
+        }
+
+        // PRECONDITION:
+        // POSTCONDITION:
+        private void upHeapBubbling() {
+            // NAME: <your name here>
+            // Your code here
+            // from last node up basically
+            Node p = this.lastNode;
+            while (p.parent != null) {
+                // comparison???
+                Node z = p.parent;
+                if (p.elem.isGreaterThan(p.parent.elem)) {
+                    swapElem(p, p.parent);
+                }
+            }
+
+        }
+
+        // PRECONDITION:
+        // POSTCONDITION:
+        private void downHeapBubbling() {
+            // NAME: <your name here>
+            // Your code here
+            Node p = this.root;
+            // it is proabably redunant to have this twice, but it works
+            if (p.elem.isGreaterThan(p.left.elem)) {
+                swapElem(p, p.left);
+                while (p.elem.isGreaterThan(p.left.elem)) {
+                    swapElem(p, p.left);
+                }
+            } else if (p.elem.isGreaterThan(p.right.elem)) {
+                swapElem(p, p.right);
+                while (p.elem.isGreaterThan(p.right.elem)) {
+                    swapElem(p, p.right);
+                }
+            }
+        }
+    }
 
 // DO NOT CHANGE ANYTHING BELOW THIS LINE
 
-// Ledger ADT for financial books/records
-class Ledger {
-    // a financial record data-structure
-    public class Record {
-        int id;
-        double balance;
-        int holdings;
-        LinkedList<Elem> buyTrans;
-        LinkedList<Elem> sellTrans;
-        public Record()  {
-            id = 0;
-            balance = 0.0;
-            holdings = 0;
-            buyTrans = new LinkedList<Elem>();
-            sellTrans = new LinkedList<Elem>();
-        }
-        public Record(int i, double bal, int h) {
-            id = i;
-            balance = bal;
-            holdings = h;
-            buyTrans = new LinkedList<Elem>();
-            sellTrans = new LinkedList<Elem>();
-        }
-    }
+    // Ledger ADT for financial books/records
+    class Ledger {
+        // a financial record data-structure
+        public class Record {
+            int id;
+            double balance;
+            int holdings;
+            LinkedList<Elem> buyTrans;
+            LinkedList<Elem> sellTrans;
 
-    private HashMap<Integer,Record> book;
+            public Record() {
+                id = 0;
+                balance = 0.0;
+                holdings = 0;
+                buyTrans = new LinkedList<Elem>();
+                sellTrans = new LinkedList<Elem>();
+            }
 
-    public Ledger() {
-        book = new HashMap<Integer,Record>();
-    }
-
-    public void printTransList(List L) {
-        System.out.print("(");
-        Iterator it = L.iterator();
-        if (it.hasNext()) {
-            System.out.print(it.next());
-            for (; it.hasNext(); )
-                System.out.print("," + it.next());
-        }
-        System.out.print(")");
-    }
-
-    public void printRecord(Record r) {
-        NumberFormat formatter = new DecimalFormat("#0.00");
-        System.out.print(r.id + ":" + formatter.format(r.balance) + ":" + r.holdings + ":");
-        printTransList(r.buyTrans);
-        System.out.print(":");
-        printTransList(r.sellTrans);
-    }
-
-    // INPUT: an element e and a Boolean flag signaling whether e corresponds to a buy transaction
-    // PRECONDITION: e is non-NULL, as are its key and value
-    // POSTCONDITION: the transaction is inserted into the ledger/book for the corresponding trader, and the trader record is updated (i.e., the trader's holdings/num of shares and balance/amount of money made or lost in all of the trader's transactions); the record for a new trader is created, and properly initialized, if this is the first transaction for the trader
-    public void trans(Elem e, boolean isBuyTrans) {
-        double price = e.key.price;
-        int num = e.value.numShares;
-        Integer id = e.value.traderID;
-        Record record = book.get(id);
-        if (record == null) {
-            book.put(id, new Record(id,0.0,0));
-            record = book.get(id);
-        }
-        record.holdings += num;
-        record.balance += num * price;
-        if (isBuyTrans) record.buyTrans.addLast(e);
-        else record.sellTrans.addLast(e);
-    }
-
-    // INPUT: an element e
-    // POSTCONDITION: a buy transaction is inserted into the ledger/book for the corresponding trader, and the trader record is updated to increase the trader's holdings by the number of shares bought and reduce the trader's balance by the amount of money the trader paid for the shares; if this is the first transaction for the trader, a new record is created, and properly initialized
-    public void buy(Elem e) {
-        trans(e,true);
-    }
-
-    // INPUT: an element e
-    // POSTCONDITION: a sell transaction is inserted into the ledger/book for the corresponding trader, and the trader record is updated to reduce its holdings by the number of shares sold and increase the trader's balance by the amount of money the trader obtained for the shares; if this is the first transaction for the trader, a new record is created, and properly initialized
-    public void sell(Elem e) {
-        trans(e,false);
-    }
-
-    public void print() {
-        for (Record it : book.values()) {
-            printRecord(it);
-            System.out.println();
-        }
-    }
-}
-
-// Stock Market ADT
-class StockMarket {
-    private Heap buyOrders;
-    private Heap sellOrders;
-    private Ledger books;
-    private double bank;
-    private int counter = 0;
-
-    public StockMarket() {
-        buyOrders = new Heap();
-        sellOrders = new Heap();
-        books = new Ledger();
-        bank = 0.0;
-    }
-
-    // PRECONDITION: there are matching orders in the limit-order books for the stock market
-    // POSTCONDITION: any possible trade is executed, and properly documented/recorded; the limit-order books for the stock market are properly updated and maintained; the stock market's bank balance is increased if there is a margin over the markets' spread (i.e., the buy limit-order price is higher than the sell limit-order price)
-    private void processTrade() {
-        Elem buyLimitOrder = new Elem(buyOrders.min());
-        Elem sellLimitOrder = new Elem(sellOrders.min());
-
-        double priceBuy = -buyLimitOrder.key.price;
-        double priceSell = sellLimitOrder.key.price;
-        int timeBuy = buyLimitOrder.key.timeStamp;
-        int timeSell = sellLimitOrder.key.timeStamp;
-        int numBuy = buyLimitOrder.value.numShares;
-        int numSell = sellLimitOrder.value.numShares;
-        int idBuy = buyLimitOrder.value.traderID;
-        int idSell = sellLimitOrder.value.traderID;
-
-        double priceDiff = priceBuy - priceSell;
-
-        int numTrade;
-        int numRemain;
-
-        Elem buyTrade;
-        Elem sellTrade;
-        Key k;
-        Value v;
-
-        sellOrders.removeMin();
-        buyOrders.removeMin();
-
-        if (numBuy > numSell) {
-            numTrade = numSell;
-            sellTrade = sellLimitOrder;
-            k = new Key(-priceBuy, timeBuy);
-            v = new Value(numTrade, idBuy);
-            buyTrade = new Elem(k, v);
-            numRemain = numBuy-numSell;
-            // add leftover buys as a new order
-            if (numRemain > 0) buyAux(numRemain, priceBuy, idBuy, timeBuy);
-        }
-        else {
-            numTrade = numBuy;
-            buyTrade = buyLimitOrder;
-            k = new Key(priceSell,timeSell);
-            v = new Value(numTrade, idSell);
-            sellTrade = new Elem(k, v);
-            numRemain = numSell - numBuy;
-            // add leftover sells as a new order
-            if (numRemain > 0) sellAux(numRemain, priceSell, idSell, timeSell);
-        }
-        books.buy(buyTrade);
-        books.sell(sellTrade);
-        bank += priceDiff * numTrade;
-    }
-
-    // POSTCONDITION: all possible trades are processed/executed and recorded/documented, the market's limit-order books are properly updated/maintained, and the market profit from the respective trades (if any) is updated/increased
-    private void trade() {
-        if (buyOrders.empty() || sellOrders.empty()) return;
-        boolean tradeAvail = true;
-        while ((tradeAvail) && !(buyOrders.empty() || sellOrders.empty())) {
-            Elem buyLimitOrder = buyOrders.min();
-            Elem sellLimitOrder = sellOrders.min();
-
-            double buyPrice = -buyLimitOrder.key.price;
-            double sellPrice = sellLimitOrder.key.price;
-
-            double marketSpread = sellPrice - buyPrice;
-
-            // process trades if lowest sell <= highest buy
-            tradeAvail = (marketSpread <= 0.0);
-            if (tradeAvail) processTrade();
-        }
-    }
-
-    // INPUT: the number of shares and price involved in the trade, the trader's ID, and the time order was placed
-    // POSTCONDITION: a new element for the order is added to the respective limit-order book for the stock market depending on the trade type
-    //private void transAux(int num, double price, int id, Date t, boolean buyTrans) {
-    private void transAux(int num, double price, int id, int t, boolean buyTrans) {
-        Key k = new Key(price * ((buyTrans) ? -1.0 : 1.0), t);
-        Value v = new Value(num, id);
-        Elem e = new Elem(k, v);
-        if (buyTrans) buyOrders.insert(e);
-        else sellOrders.insert(e);
-    }
-
-    // INPUT: the number of shares and price for the buy order placed by the trader with the given input id, and the time the buy order was placed
-    // POSTCONDITION: a new element for the buy order is added to the respective buy limit-order book for the stock market
-    //private void buyAux(int num, double price, int id, Date t) {
-    private void buyAux(int num, double price, int id, int t) {
-        transAux(num, price, id, t, true);
-    }
-
-    // INPUT: the number of shares and price for the sell order placed by the trader with the given input id, and the time the sell order was placed
-    // POSTCONDITION: a new element for the sell order is added to the respective sell limit-order book for the stock market
-    private void sellAux(int num, double price, int id, int t) {
-        transAux(num, price, id, t, false);
-    }
-
-    // INPUT: the price and number of shares for the buy order placed by the trader with the given input id
-    // POSTCONDITION: a new element for the buy order is added to the respective buy limit-order book for the stock market and a trade is executed if there is a matching sell order already in the limit-order books for the stock market
-    public void buy(double price, int num, int id) {
-        buyAux(num, price, id, counter++);
-        trade();
-    }
-
-    // INPUT: the price and number of shares for the sell order placed by the trader with the given input id
-    // POSTCONDITION: a new element for the sell order is added to the respective sell limit-order book for the stock market and a trade is executed if there is a matching buy order already in the limit-order books for the stock market
-    public void sell(double price, int num, int id) {
-        sellAux(num, price, id, counter++);
-        trade();
-    }
-
-    public void print() {
-        printBuy();
-        printSell();
-        printBank();
-    }
-
-    public void printBuy() {
-        System.out.println("*** Buy Limit Orders ***");
-        buyOrders.printTree(buyOrders.root, 0);
-    }
-
-    public void printSell() {
-        System.out.println("*** Sell Limit Orders ***");
-        sellOrders.printTree(sellOrders.root, 0);
-    }
-
-    public void printLedger() {
-        System.out.println("*** Transaction Record ***");
-        books.print();
-    }
-
-    public void printBank() {
-        NumberFormat formatter = new DecimalFormat("#0.00");
-        System.out.println("*** Bank Profit ***");
-        System.out.println("$ " + formatter.format(bank));
-    }
-}
-
-
-public class Main {
-    public static void main(String[] args)
-    {
-        String inputFilename = "input.txt";
-        String line;
-
-        StockMarket M = new StockMarket();
-        // open input file
-        try
-        {
-            File inputFile = new File(inputFilename);
-            BufferedReader ifs = new BufferedReader(new FileReader(inputFile));
-            while ((line = ifs.readLine())!=null)
-            {
-                // echo input
-                System.out.println(line.trim());
-                // parse input
-                StringTokenizer st = new StringTokenizer(line);
-                String token;
-                String command = "";
-                // store tokens in an array
-                ArrayList<String> tokens = new ArrayList<String>();
-                while (st.hasMoreTokens())
-                {
-                    // trim whitespace
-                    token = st.nextToken().trim();
-                    tokens.add(token);
-                }
-                if (tokens.size() > 0)
-                {
-                    command = tokens.get(0); // first token is the command
-                }
-                if (tokens.size() == 1)
-                {
-                    if (command.equals("print"))
-                    {
-                        M.print();
-                    }
-                }
-                if (tokens.size() > 1)
-                {
-                    if (command.equals("buy")) // buy # shares @ specific price, id
-                    {
-                        M.buy(Float.parseFloat(tokens.get(2)), Integer.parseInt(tokens.get(1)), Integer.parseInt(tokens.get(3)));
-                    }
-                    if (command.equals("sell")) // buy # shares @ specific price, id
-                    {
-                        M.sell(Float.parseFloat(tokens.get(2)), Integer.parseInt(tokens.get(1)), Integer.parseInt(tokens.get(3)));
-                    }
-                    if (command.equals("print"))
-                    {
-                        if (tokens.get(1).equals("buy"))
-                        {
-                            M.printBuy();
-                        }
-                        if (tokens.get(1).equals("sell"))
-                        {
-                            M.printSell();
-                        }
-                        if (tokens.get(1).equals("ledger"))
-                        {
-                            M.printLedger();
-                        }
-                        if (tokens.get(1).equals("bank"))
-                        {
-                            M.printBank();
-                        }
-                    }
-                }
+            public Record(int i, double bal, int h) {
+                id = i;
+                balance = bal;
+                holdings = h;
+                buyTrans = new LinkedList<Elem>();
+                sellTrans = new LinkedList<Elem>();
             }
         }
-        catch (FileNotFoundException e)
-        {
-            return;
-        }
-        catch (IOException e)
-        {
-            return;
+
+        private HashMap<Integer, Record> book;
+
+        public Ledger() {
+            book = new HashMap<Integer, Record>();
         }
 
+        public void printTransList(List L) {
+            System.out.print("(");
+            Iterator it = L.iterator();
+            if (it.hasNext()) {
+                System.out.print(it.next());
+                for (; it.hasNext(); )
+                    System.out.print("," + it.next());
+            }
+            System.out.print(")");
+        }
+
+        public void printRecord(Record r) {
+            NumberFormat formatter = new DecimalFormat("#0.00");
+            System.out.print(r.id + ":" + formatter.format(r.balance) + ":" + r.holdings + ":");
+            printTransList(r.buyTrans);
+            System.out.print(":");
+            printTransList(r.sellTrans);
+        }
+
+        // INPUT: an element e and a Boolean flag signaling whether e corresponds to a buy transaction
+        // PRECONDITION: e is non-NULL, as are its key and value
+        // POSTCONDITION: the transaction is inserted into the ledger/book for the corresponding trader, and the trader record is updated (i.e., the trader's holdings/num of shares and balance/amount of money made or lost in all of the trader's transactions); the record for a new trader is created, and properly initialized, if this is the first transaction for the trader
+        public void trans(Elem e, boolean isBuyTrans) {
+            double price = e.key.price;
+            int num = e.value.numShares;
+            Integer id = e.value.traderID;
+            Record record = book.get(id);
+            if (record == null) {
+                book.put(id, new Record(id, 0.0, 0));
+                record = book.get(id);
+            }
+            record.holdings += num;
+            record.balance += num * price;
+            if (isBuyTrans) record.buyTrans.addLast(e);
+            else record.sellTrans.addLast(e);
+        }
+
+        // INPUT: an element e
+        // POSTCONDITION: a buy transaction is inserted into the ledger/book for the corresponding trader, and the trader record is updated to increase the trader's holdings by the number of shares bought and reduce the trader's balance by the amount of money the trader paid for the shares; if this is the first transaction for the trader, a new record is created, and properly initialized
+        public void buy(Elem e) {
+            trans(e, true);
+        }
+
+        // INPUT: an element e
+        // POSTCONDITION: a sell transaction is inserted into the ledger/book for the corresponding trader, and the trader record is updated to reduce its holdings by the number of shares sold and increase the trader's balance by the amount of money the trader obtained for the shares; if this is the first transaction for the trader, a new record is created, and properly initialized
+        public void sell(Elem e) {
+            trans(e, false);
+        }
+
+        public void print() {
+            for (Record it : book.values()) {
+                printRecord(it);
+                System.out.println();
+            }
+        }
     }
-}
+
+    // Stock Market ADT
+    class StockMarket {
+        private Heap buyOrders;
+        private Heap sellOrders;
+        private Ledger books;
+        private double bank;
+        private int counter = 0;
+
+        public StockMarket() {
+            buyOrders = new Heap();
+            sellOrders = new Heap();
+            books = new Ledger();
+            bank = 0.0;
+        }
+
+        // PRECONDITION: there are matching orders in the limit-order books for the stock market
+        // POSTCONDITION: any possible trade is executed, and properly documented/recorded; the limit-order books for the stock market are properly updated and maintained; the stock market's bank balance is increased if there is a margin over the markets' spread (i.e., the buy limit-order price is higher than the sell limit-order price)
+        private void processTrade() {
+            Elem buyLimitOrder = new Elem(buyOrders.min());
+            Elem sellLimitOrder = new Elem(sellOrders.min());
+
+            double priceBuy = -buyLimitOrder.key.price;
+            double priceSell = sellLimitOrder.key.price;
+            int timeBuy = buyLimitOrder.key.timeStamp;
+            int timeSell = sellLimitOrder.key.timeStamp;
+            int numBuy = buyLimitOrder.value.numShares;
+            int numSell = sellLimitOrder.value.numShares;
+            int idBuy = buyLimitOrder.value.traderID;
+            int idSell = sellLimitOrder.value.traderID;
+
+            double priceDiff = priceBuy - priceSell;
+
+            int numTrade;
+            int numRemain;
+
+            Elem buyTrade;
+            Elem sellTrade;
+            Key k;
+            Value v;
+
+            sellOrders.removeMin();
+            buyOrders.removeMin();
+
+            if (numBuy > numSell) {
+                numTrade = numSell;
+                sellTrade = sellLimitOrder;
+                k = new Key(-priceBuy, timeBuy);
+                v = new Value(numTrade, idBuy);
+                buyTrade = new Elem(k, v);
+                numRemain = numBuy - numSell;
+                // add leftover buys as a new order
+                if (numRemain > 0) buyAux(numRemain, priceBuy, idBuy, timeBuy);
+            } else {
+                numTrade = numBuy;
+                buyTrade = buyLimitOrder;
+                k = new Key(priceSell, timeSell);
+                v = new Value(numTrade, idSell);
+                sellTrade = new Elem(k, v);
+                numRemain = numSell - numBuy;
+                // add leftover sells as a new order
+                if (numRemain > 0) sellAux(numRemain, priceSell, idSell, timeSell);
+            }
+            books.buy(buyTrade);
+            books.sell(sellTrade);
+            bank += priceDiff * numTrade;
+        }
+
+        // POSTCONDITION: all possible trades are processed/executed and recorded/documented, the market's limit-order books are properly updated/maintained, and the market profit from the respective trades (if any) is updated/increased
+        private void trade() {
+            if (buyOrders.empty() || sellOrders.empty()) return;
+            boolean tradeAvail = true;
+            while ((tradeAvail) && !(buyOrders.empty() || sellOrders.empty())) {
+                Elem buyLimitOrder = buyOrders.min();
+                Elem sellLimitOrder = sellOrders.min();
+
+                double buyPrice = -buyLimitOrder.key.price;
+                double sellPrice = sellLimitOrder.key.price;
+
+                double marketSpread = sellPrice - buyPrice;
+
+                // process trades if lowest sell <= highest buy
+                tradeAvail = (marketSpread <= 0.0);
+                if (tradeAvail) processTrade();
+            }
+        }
+
+        // INPUT: the number of shares and price involved in the trade, the trader's ID, and the time order was placed
+        // POSTCONDITION: a new element for the order is added to the respective limit-order book for the stock market depending on the trade type
+        //private void transAux(int num, double price, int id, Date t, boolean buyTrans) {
+        private void transAux(int num, double price, int id, int t, boolean buyTrans) {
+            Key k = new Key(price * ((buyTrans) ? -1.0 : 1.0), t);
+            Value v = new Value(num, id);
+            Elem e = new Elem(k, v);
+            if (buyTrans) buyOrders.insert(e);
+            else sellOrders.insert(e);
+        }
+
+        // INPUT: the number of shares and price for the buy order placed by the trader with the given input id, and the time the buy order was placed
+        // POSTCONDITION: a new element for the buy order is added to the respective buy limit-order book for the stock market
+        //private void buyAux(int num, double price, int id, Date t) {
+        private void buyAux(int num, double price, int id, int t) {
+            transAux(num, price, id, t, true);
+        }
+
+        // INPUT: the number of shares and price for the sell order placed by the trader with the given input id, and the time the sell order was placed
+        // POSTCONDITION: a new element for the sell order is added to the respective sell limit-order book for the stock market
+        private void sellAux(int num, double price, int id, int t) {
+            transAux(num, price, id, t, false);
+        }
+
+        // INPUT: the price and number of shares for the buy order placed by the trader with the given input id
+        // POSTCONDITION: a new element for the buy order is added to the respective buy limit-order book for the stock market and a trade is executed if there is a matching sell order already in the limit-order books for the stock market
+        public void buy(double price, int num, int id) {
+            buyAux(num, price, id, counter++);
+            trade();
+        }
+
+        // INPUT: the price and number of shares for the sell order placed by the trader with the given input id
+        // POSTCONDITION: a new element for the sell order is added to the respective sell limit-order book for the stock market and a trade is executed if there is a matching buy order already in the limit-order books for the stock market
+        public void sell(double price, int num, int id) {
+            sellAux(num, price, id, counter++);
+            trade();
+        }
+
+        public void print() {
+            printBuy();
+            printSell();
+            printBank();
+        }
+
+        public void printBuy() {
+            System.out.println("*** Buy Limit Orders ***");
+            buyOrders.printTree(buyOrders.root, 0);
+        }
+
+        public void printSell() {
+            System.out.println("*** Sell Limit Orders ***");
+            sellOrders.printTree(sellOrders.root, 0);
+        }
+
+        public void printLedger() {
+            System.out.println("*** Transaction Record ***");
+            books.print();
+        }
+
+        public void printBank() {
+            NumberFormat formatter = new DecimalFormat("#0.00");
+            System.out.println("*** Bank Profit ***");
+            System.out.println("$ " + formatter.format(bank));
+        }
+    }
+
+
+    public class Main {
+        public static void main(String[] args) {
+            String inputFilename = "input.txt";
+            String line;
+
+            StockMarket M = new StockMarket();
+            // open input file
+            try {
+                File inputFile = new File(inputFilename);
+                BufferedReader ifs = new BufferedReader(new FileReader(inputFile));
+                while ((line = ifs.readLine()) != null) {
+                    // echo input
+                    System.out.println(line.trim());
+                    // parse input
+                    StringTokenizer st = new StringTokenizer(line);
+                    String token;
+                    String command = "";
+                    // store tokens in an array
+                    ArrayList<String> tokens = new ArrayList<String>();
+                    while (st.hasMoreTokens()) {
+                        // trim whitespace
+                        token = st.nextToken().trim();
+                        tokens.add(token);
+                    }
+                    if (tokens.size() > 0) {
+                        command = tokens.get(0); // first token is the command
+                    }
+                    if (tokens.size() == 1) {
+                        if (command.equals("print")) {
+                            M.print();
+                        }
+                    }
+                    if (tokens.size() > 1) {
+                        if (command.equals("buy")) // buy # shares @ specific price, id
+                        {
+                            M.buy(Float.parseFloat(tokens.get(2)), Integer.parseInt(tokens.get(1)), Integer.parseInt(tokens.get(3)));
+                        }
+                        if (command.equals("sell")) // buy # shares @ specific price, id
+                        {
+                            M.sell(Float.parseFloat(tokens.get(2)), Integer.parseInt(tokens.get(1)), Integer.parseInt(tokens.get(3)));
+                        }
+                        if (command.equals("print")) {
+                            if (tokens.get(1).equals("buy")) {
+                                M.printBuy();
+                            }
+                            if (tokens.get(1).equals("sell")) {
+                                M.printSell();
+                            }
+                            if (tokens.get(1).equals("ledger")) {
+                                M.printLedger();
+                            }
+                            if (tokens.get(1).equals("bank")) {
+                                M.printBank();
+                            }
+                        }
+                    }
+                }
+            } catch (FileNotFoundException e) {
+                return;
+            } catch (IOException e) {
+                return;
+            }
+
+        }
+    }
