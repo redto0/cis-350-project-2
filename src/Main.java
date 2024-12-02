@@ -390,6 +390,7 @@ class CompleteBT extends BT {
             Node y = getParentOfNewLastNode();
             makeChild(y, x, y.left == null);
         }
+        this.lastNode = x;
         return x;
     }
 
@@ -546,13 +547,12 @@ class CompleteBT extends BT {
             // Your code here
             // from last node up basically
             if ( n == 1) return;
-            Node p = this.lastNode;
-            while (p.parent != null) {
-                // comparison???
-                Node z = p.parent;
-                if (p.elem.isGreaterThan(p.parent.elem)) {
-                    swapElem(p, p.parent);
-                }
+            Node w = this.lastNode;
+            Node z = w.parent;
+            while (z != null && z.elem.isGreaterThan(w.elem)){
+                swapElem(w, z);
+                w = z;
+                z = w.parent;
             }
 
         }
