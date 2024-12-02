@@ -400,31 +400,7 @@ class CompleteBT extends BT {
     public Elem remove() {
         // NAME: <alexander boccaccio>
         // Your code here
-        Node out = this.root;
-        Elem outElem = this.root.elem;
-        // idc to find if this exist as a function lol
-        // assgin the last element to null
-        if (this.lastNode.parent.right == null) {
-            this.lastNode.left = null;
-        } else {
-            this.lastNode.parent.right = null;
-        }
-        // assgin the root's children to the last node
-        if (this.root.left != null) {
-            // make sure that right isn't null
-            this.lastNode.left = this.root.left;
-        }
-        if (this.root.right != null) {
-            // make sure that left isn't null
-            this.lastNode.right = this.root.right;
-        }
-        // assgin the root to the last node
-        this.root = this.lastNode;
-        // Root is gone remove adjust count
-        this.n--;
-        // assign the next last node
-        this.lastNode = this.getNewLastNode();
-        return outElem;
+        
     }
 
     // OUTPUT: the node in the complete BT where any new node inserted would be placed
