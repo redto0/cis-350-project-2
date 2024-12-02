@@ -382,22 +382,15 @@ class CompleteBT extends BT {
         // right child is greater than root
 
         // Node(Elem e, Node l, Node r, Node p) {
-        if (this.root == null) {
-            this.root = new Node(e, null, null, null);
-            this.lastNode = this.root;
-            return this.root;
-        }
-
-        Node p = this.getParentOfNewLastNode();
-        Node w = new Node(e, null, null, p);
-        if (p.left != null) {
-            p.right = w;
+        Node x = new Node(e, null, null, null);
+        Node z = this.lastNode;
+        if(z == null) {
+            this.root = x;
         } else {
-            p.left = w;
+            Node y = getParentOfNewLastNode();
+            makeChild(y, x, y.left == null);
         }
-        this.lastNode = w;
-        this.n++;
-        return w;
+        return x;
     }
 
     // OUTPUT: the element of the last node of the complete BT (to be removed); NULL if the tree is empty
