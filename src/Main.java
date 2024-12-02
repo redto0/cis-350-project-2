@@ -435,36 +435,23 @@ class CompleteBT extends BT {
         // return where the next new node should be placed
         // so we place in the last spot
 
-        //assuing this.last node is not the root it seems...
-        if (this.lastNode == null) this.lastNode = this.root;
-        if (this.lastNode == this.root){
-            return this.lastNode.left;
-        }
+        Node z = this.lastNode;
+        // last node pointer
+        if (z == null || z.parent == null) return z;
+        // we check if the last is null or the root,
+        // if null then there is no new parent (since it is the root so we return z!)
+        // if z.parent is null then it is the root so we can return z
+        if ( z == z.parent.left) return z;
+        // this is the easy case where z is the left child so return its parent so we can fill the right
 
-        Node w = this.lastNode;
-        if (this.lastNode.parent.left != null) {
-            if (this.lastNode.parent.left == this.lastNode) {
-                // then the next spot is the right node of the last node
-                return this.lastNode.parent;
-            }
-        }
-        // this is if the last Node happens to be the last Node in which
-        if (this.n == this.CalulateTotal((int) this.CalulateDept(n))) {
-            // this is the last node of its branch
-            Node p = this.lastLeftDescendant(this.root);
-            return p;
+        z = firstLeftAncestor(z);
+        if(z == null){
+            z = this.root;
         } else {
-            // if (this.lastNode)
-            Node p = this.firstLeftAncestor(w);
-            if (p.right != null) {
-                p = p.right;
-            }
-            while (p.left != null) {
-                p = p.left;
-            }
-            return p;
+            z = z.right;
+            z = lastLeftDescendant(z);
         }
-
+        return z;
     }
 
     // because sometimes math can be hard for people
@@ -558,6 +545,7 @@ class CompleteBT extends BT {
             // NAME: <your name here>
             // Your code here
             // from last node up basically
+            if ( n == 1) return;
             Node p = this.lastNode;
             while (p.parent != null) {
                 // comparison???
