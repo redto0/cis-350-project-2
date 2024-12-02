@@ -475,36 +475,7 @@ class CompleteBT extends BT {
         // this is the one to remove, and remember, no pointers!
 
 
-        int Dept = (int) CalulateDept(this.n);
-        if (this.root == null) {
-            return null;
-        }
-        if (this.lastNode == null) {
-            return this.root;
-        } else if (this.n == this.CalulateTotal((int) this.CalulateDept(n)) + 1) {
-            // then can we assume that this is the last node of its level, and we need to step back to the last one
-            Node p = this.root;
-            while (p.right != null) {
-                p = p.right;
-            }
-            return p;
-        } else if (this.lastNode == this.lastNode.parent.right) {
-            // we find that p is the right child so we can pass the trouch to the left child
-            return this.lastNode.parent.left;
-        } else {
-            // we manually find it (normal case) and p is a left child
-            // we find the first node that is left of p
-            Node p = this.firstLeftAncestor(this.lastNode);
-            // then we step left to go down the other path;
-            p = p.left;
-            // then we go as far right as possible 
-            while (p.right != null) {
-                // I know there is a function already, but I don't like it, and it isn't required to do so
-                p = p.right;
-            }
-            return p;
-
-        }
+        
         // this left is annoying
         //return new Node();
     }
