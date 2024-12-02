@@ -471,13 +471,22 @@ class CompleteBT extends BT {
     private Node getNewLastNode() {
         // NAME: <Alexander Boccaccio>
         // Your code here
+        Node z = this.lastNode;
+        // last node pointer
+        if (z.parent == null) return null;
+        // this means the last node is the root which means we will have no root or last node
+        if (z.parent.right == z) {
+            return z.parent.left;
+        }
 
-        // this is the one to remove, and remember, no pointers!
-
-
-        
-        // this left is annoying
-        //return new Node();
+        z = firstRightAncestor(z);
+        if (z == null){
+            z = this.root;
+        } else {
+            z = z.left;
+            z = lastRightDescendant(z);
+        }
+        return z;
     }
 }
 
