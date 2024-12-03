@@ -400,7 +400,19 @@ class CompleteBT extends BT {
     public Elem remove() {
         // NAME: <alexander boccaccio>
         // Your code here
-        
+        Node out = this.root;
+        if (out == null) return null;   // empty tree
+        if (lastNode == root) {         // the tree has one element
+            // removeNode does not handle LastNode
+            this.lastNode = getNewLastNode();
+            return removeNode(out);
+        }
+        swapElem(lastNode, this.root);
+        Node nextLastNode = getNewLastNode();
+        removeNode(lastNode);
+        this.lastNode = nextLastNode;
+
+        return out.elem;
     }
 
     // OUTPUT: the node in the complete BT where any new node inserted would be placed
@@ -418,7 +430,7 @@ class CompleteBT extends BT {
         // we check if the last is null or the root,
         // if null then there is no new parent (since it is the root so we return z!)
         // if z.parent is null then it is the root so we can return z
-        if ( z == z.parent.left) return z;
+        if ( z == z.parent.left) return z.parent;
         // this is the easy case where z is the left child so return its parent so we can fill the right
 
         z = firstLeftAncestor(z);
