@@ -531,20 +531,26 @@ class CompleteBT extends BT {
             // NAME: <your name here>
             // Your code here
             Node p = this.root;
+            if(p.left == null) return;
             // it is proabably redunant to have this twice, but it works
-            if (p.elem.isGreaterThan(p.left.elem)) {
-                swapElem(p, p.left);
-                while (p.elem.isGreaterThan(p.left.elem)) {
-                    swapElem(p, p.left);
+            while (true){
+                boolean isLeft = false;
+                if(p.right == null || p.left.elem.isLessThan(p.right.elem)){
+                    isLeft = true;
                 }
-            } else if (p.elem.isGreaterThan(p.right.elem)) {
-                swapElem(p, p.right);
-                while (p.elem.isGreaterThan(p.right.elem)) {
-                    swapElem(p, p.right);
+                if (isLeft){
+                    if ((p.elem.isGreaterThan(p.left.elem))){
+                        swapElem(p, p.left);
+                        p = p.left;
+                    } else break;
+                } else {
+                    if (p.elem.isGreaterThan(p.right.elem)){
+                        swapElem(p, p.right);
+                    } else break;
                 }
             }
         }
-    }
+    }// end heap class
 
 // DO NOT CHANGE ANYTHING BELOW THIS LINE
 
