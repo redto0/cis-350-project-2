@@ -278,8 +278,8 @@ class BT {
             w = w.parent;
 
         }
-        // return youngestAncestorType(w,false);
-        return w; // if w is the right child of its parent then return w;
+        return youngestAncestorType(w,false);
+        // return w; // if w is the right child of its parent then return w;
 
     }
 
@@ -357,9 +357,9 @@ class CompleteBT extends BT {
 
     public Node lastNode;
 
-    public Object CalulateDept(int n) {
+    public int CalulateDept(int n) {
         int dept = 0;
-        if (n == 0) return null;
+        // if (n == 0) return null;
         int bound = 0;
         while (bound < n) {
             dept++;
@@ -379,18 +379,18 @@ class CompleteBT extends BT {
     public Node add(Elem e) {
         // NAME: <Aleaxander Boccaccio>
         // Your code here
-        // right child is greater than root
 
         // Node(Elem e, Node l, Node r, Node p) {
         Node x = new Node(e, null, null, null);
-        Node z = this.lastNode;
-        if(z == null) {
+        // Node z = this.lastNode;
+        if(this.lastNode == null) {
             this.root = x;
         } else {
             Node y = getParentOfNewLastNode();
             makeChild(y, x, y.left == null);
         }
         this.lastNode = x;
+        n++;
         return x;
     }
 
@@ -408,13 +408,22 @@ class CompleteBT extends BT {
             return removeNode(out);
         }
         swapElem(lastNode, this.root);
+        out = this.lastNode;
         Node nextLastNode = getNewLastNode();
-        removeNode(lastNode);
+        // removeNode(lastNode);
         this.lastNode = nextLastNode;
-
-        return out.elem;
+        //n--;
+        // out.parent.
+        return removeNode(out);
     }
 
+
+    private int getDepth(Node z) {
+        if (z == null) return 0;
+        int leftDepth = getDepth(z.left);
+        int rightDepth = getDepth(z.right);
+        return Math.min(leftDepth, rightDepth) + 1;
+    }
     // OUTPUT: the node in the complete BT where any new node inserted would be placed
     // PRECONDITION:
     // POSTCONDITION:
@@ -423,7 +432,28 @@ class CompleteBT extends BT {
         // Your code here
         // return where the next new node should be placed
         // so we place in the last spot
+        Node start = this.root;
+        // if(start == null) return this.root;
+        if(start.elem == null){}
+        while(true){
+            if(start.left == null){
+                return start;
+                // TODO check below
+            } else if (start.right == null){
+                return start;
+            }
+            int l = getDepth(start.left);
+            int r = getDepth(start.right);
+            if (r == l){
+                start = start.left;
+            }
+            if ( l > r){
+                start = start.right;
+            }
 
+        }
+        // return start;
+        /*
         Node z = this.lastNode;
         // last node pointer
         if (z == null || z.parent == null) return z;
@@ -441,6 +471,7 @@ class CompleteBT extends BT {
             z = lastLeftDescendant(z);
         }
         return z;
+        */
     }
 
     // because sometimes math can be hard for people
@@ -478,79 +509,119 @@ class CompleteBT extends BT {
     }
 }
 
-    // Heap data-structure implementation of a priority queue ADT
-    class Heap extends CompleteBT {
-        // INPUT: an element e to be inserted in the heap
-        // PRECONDITION:
-        // POSTCONDITION:
-        public void insert(Elem e) {
-            // NAME: <Alexander Boccaccio>
-            // Your code here
-            this.add(e);
-            this.upHeapBubbling();
+// Heap data-structure implementation of a priority queue ADT
+class Heap extends CompleteBT {
+
+    public Heap() {
+    }
+
+
+
+
+    // INPUT: an element e to be inserted in the heap
+    // PRECONDITION:
+    // POSTCONDITION:
+    public void insert(Elem e) {
+        // NAME: <Alexander Boccaccio>
+        // Your code here
+        this.add(e);
+        this.upHeapBubbling();
+    }
+
+    // OUTPUT: the minimum (highest priority) element of the heap
+    // PRECONDITION:
+    // POSTCONDITION:
+    public Elem min() {
+        // NAME: <Alexander Boccaccio>
+        // Your code here
+        return this.root.elem;
+    }
+
+    // PRECONDITION:
+    // POSTCONDITION:
+    public void removeMin() {
+        // NAME: <Alexander Boccaccio>
+        // Your code here
+        this.remove();
+        this.downHeapBubbling();
+    }
+
+    // PRECONDITION:
+    // POSTCONDITION:
+    private void upHeapBubbling() {
+        // NAME: <Alexander Boccaccio>
+        // Your code here
+        // from last node up basically
+        if ( n == 1) return;
+        Node w = this.lastNode;
+        Node z = w.parent;
+        while (z != null && z.elem.isGreaterThan(w.elem)){
+            swapElem(w, z);
+            w = z;
+            z = w.parent;
         }
 
-        // OUTPUT: the minimum (highest priority) element of the heap
-        // PRECONDITION:
-        // POSTCONDITION:
-        public Elem min() {
-            // NAME: <Alexander Boccaccio>
-            // Your code here
-            return this.root.elem;
-        }
+    }
 
-        // PRECONDITION:
-        // POSTCONDITION:
-        public void removeMin() {
-            // NAME: <your name here>
-            // Your code here
-            this.remove();
-            this.downHeapBubbling();
-        }
-
-        // PRECONDITION:
-        // POSTCONDITION:
-        private void upHeapBubbling() {
-            // NAME: <your name here>
-            // Your code here
-            // from last node up basically
-            if ( n == 1) return;
-            Node w = this.lastNode;
-            Node z = w.parent;
-            while (z != null && z.elem.isGreaterThan(w.elem)){
-                swapElem(w, z);
-                w = z;
-                z = w.parent;
+    // PRECONDITION:
+    // POSTCONDITION:
+    private void downHeapBubbling() {
+        // NAME: <Alexander Boccaccio>
+        // Your code here
+        Node p = this.root;
+        if(p == null) return;
+        if(p.left == null) return;
+        // it is proabably redunant to have this twice, but it works
+        while (true){
+            boolean isLeft = false;
+            if(p.right == null || p.left.elem.isLessThan(p.right.elem)){
+                isLeft = true;
             }
+            if (isLeft){
+                if(p.left == null) break;
+                if ((p.elem.isGreaterThan(p.left.elem))){
+                    swapElem(p, p.left);
+                    p = p.left;
+                } else break;
+            } else {
+                if (p.elem.isGreaterThan(p.right.elem)){
+                    swapElem(p, p.right);
+                } else break;
+            }
+        }
+    }
 
+    public void printTree() {
+        if (this.root == null) {
+            System.out.println("Tree is empty");
+            return;
         }
 
-        // PRECONDITION:
-        // POSTCONDITION:
-        private void downHeapBubbling() {
-            // NAME: <your name here>
-            // Your code here
-            Node p = this.root;
-            if(p.left == null) return;
-            // it is proabably redunant to have this twice, but it works
-            while (true){
-                boolean isLeft = false;
-                if(p.right == null || p.left.elem.isLessThan(p.right.elem)){
-                    isLeft = true;
-                }
-                if (isLeft){
-                    if ((p.elem.isGreaterThan(p.left.elem))){
-                        swapElem(p, p.left);
-                        p = p.left;
-                    } else break;
+        Queue<Node> queue = new LinkedList<>();
+        queue.offer(root);
+        int level = 0;
+
+        while (!queue.isEmpty()) {
+            int levelSize = queue.size();
+            System.out.print("Level " + level + ": ");
+
+            for (int i = 0; i < levelSize; i++) {
+                Node node = queue.poll();
+                if (node != null) {
+                    System.out.print(node.elem + " ");
+                    queue.offer(node.left);
+                    queue.offer(node.right);
                 } else {
-                    if (p.elem.isGreaterThan(p.right.elem)){
-                        swapElem(p, p.right);
-                    } else break;
+                    System.out.print("null ");
                 }
             }
+
+            System.out.println();
+            level++;
         }
-    }// end heap class
+    }
+}// end heap class
+
 
 // DO NOT CHANGE ANYTHING BELOW THIS LINE
 
