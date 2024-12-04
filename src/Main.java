@@ -548,11 +548,7 @@ class Heap extends CompleteBT {
 
     // PRECONDITION:
     // POSTCONDITION:
-<<<<<<< Updated upstream
     private void upHeapBubbling() {
-=======
-    private void upHeapBubbling(Node w) {
->>>>>>> Stashed changes
         // NAME: <Alexander Boccaccio>
         // Your code here
         // from last node up basically
@@ -565,9 +561,6 @@ class Heap extends CompleteBT {
             z = w.parent;
         }
 
-        while(this.root != w){
-            if(min().isLessThan(w.parent.elem, w.elem) )
-        }
     }
 
     // PRECONDITION:
