@@ -377,7 +377,7 @@ class CompleteBT extends BT {
     // PRECONDITION:
     // POSTCONDITION:
     public Node add(Elem e) {
-        // NAME: <Aleaxander Boccaccio>
+        // NAME: <Alexander Boccaccio>
         // Your code here
 
         // Node(Elem e, Node l, Node r, Node p) {
