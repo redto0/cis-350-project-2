@@ -548,7 +548,7 @@ class Heap extends CompleteBT {
         // NAME: <Alexander Boccaccio>
         // Your code here
         if (this.empty() ) return;
-        System.out.println(n);
+        
 
         if(this.n == 1) {
             removeNode(this.root);
