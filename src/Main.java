@@ -542,6 +542,7 @@ class Heap extends CompleteBT {
     public void removeMin() {
         // NAME: <Alexander Boccaccio>
         // Your code here
+        if (this.empty() ) return;
         this.remove();
         this.downHeapBubbling();
     }
@@ -571,17 +572,29 @@ class Heap extends CompleteBT {
         Node p = this.root;
         if(p == null) return;
         if(p.left == null) return;
+        // minChild();
         // it is proabably redunant to have this twice, but it works
         while (true){
             boolean isLeft = false;
+            // check it the children exist
+            if (p.left == null) break;
+            // this would be great to use the min child function lol
             if(p.right == null || p.left.elem.isLessThan(p.right.elem)){
+                // basically we check that right does not exist and is higher than the left one.
                 isLeft = true;
+                // then left is the min child
             }
             if (isLeft){
+                // left is the min child
                 if(p.left == null) break;
+                    // we check if left exist (again);
                 if ((p.elem.isGreaterThan(p.left.elem))){
+                    // if the parent is great than the child we need to swap
                     swapElem(p, p.left);
                     p = p.left;
+                    // assgin the next case
+                    if ( p == null) break;
+                    // we check to make p still exist
                 } else break;
             } else {
                 if (p.elem.isGreaterThan(p.right.elem)){
