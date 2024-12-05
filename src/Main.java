@@ -401,7 +401,7 @@ class CompleteBT extends BT {
         // NAME: <alexander boccaccio>
         // Your code here
         Node out = this.root;
-        if (out == null) return null;   // empty tree
+        if (this.empty()) return null;   // empty tree
         if (lastNode == root) {         // the tree has one element
             // removeNode does not handle LastNode
             this.lastNode = getNewLastNode();
