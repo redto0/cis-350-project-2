@@ -383,7 +383,7 @@ class CompleteBT extends BT {
         // Node(Elem e, Node l, Node r, Node p) {
         Node x = new Node(e, null, null, null);
         // Node z = this.lastNode;
-        if(this.lastNode == null) {
+        if(this.root == null) {
             this.root = x;
         } else {
             Node y = getParentOfNewLastNode();
@@ -400,21 +400,20 @@ class CompleteBT extends BT {
     public Elem remove() {
         // NAME: <alexander boccaccio>
         // Your code here
-        Node out = this.root;
+        Node out = this.lastNode;
         if (this.empty()) return null;   // empty tree
         if (lastNode == root) {         // the tree has one element
             // removeNode does not handle LastNode
-            this.lastNode = getNewLastNode();
+            this.lastNode = null;
             return removeNode(out);
         }
-        swapElem(lastNode, this.root);
-        out = this.lastNode;
-        Node nextLastNode = getNewLastNode();
         // removeNode(lastNode);
-        this.lastNode = nextLastNode;
+        Elem outElem = out.elem;
+        removeNode(out);
+        this.lastNode = getNewLastNode();
         //n--;
         // out.parent.
-        return removeNode(out);
+        return outElem;
     }
 
 
@@ -434,13 +433,14 @@ class CompleteBT extends BT {
         // so we place in the last spot
         Node start = this.root;
         // if(start == null) return this.root;
-        if(start.elem == null){}
+        if(start == null){
+            return null;
+        }
         while(true){
-            if(start.left == null){
+            if(start.left == null || start.right == null){
+                // base case where one of the children do not exist
                 return start;
                 // TODO check below
-            } else if (start.right == null){
-                return start;
             }
             int l = getDepth(start.left);
             int r = getDepth(start.right);
@@ -483,13 +483,18 @@ class CompleteBT extends BT {
         return (2 ^ (numb));
     }
 
-    // OUTPUT: the node in the BT that would become the last node of the complete BT should the last node be removed
+    // OUTPUT: the lastNode in the BT
     // PRECONDITION:    has the node been removed yet? probably so last node has a null element but a valid pointer in the structure
     // POSTCONDITION:   we return last node (booooo) but it's ok if we need to still delete the other node
     //                  it can have a global pointer before this mess
     private Node getNewLastNode() {
         // NAME: <Alexander Boccaccio>
         // Your code here
+        Node newer = getParentOfNewLastNode();
+        if (newer.left == null) return newer;
+        return (newer.right != null) ? newer.right : newer.left;
+
+        /*
         Node z = this.lastNode;
         // last node pointer
         if (z.parent == null) return null;
@@ -505,7 +510,7 @@ class CompleteBT extends BT {
             z = z.left;
             z = lastRightDescendant(z);
         }
-        return z;
+        return z; */
     }
 }
 
@@ -543,8 +548,14 @@ class Heap extends CompleteBT {
         // NAME: <Alexander Boccaccio>
         // Your code here
         if (this.empty() ) return;
-        this.remove();
-        this.downHeapBubbling();
+        System.out.println(n);
+
+        if(this.n == 1) {
+            removeNode(this.root);
+        } else {
+            swapElem(this.lastNode, this.root);
+            this.remove();
+        }this.downHeapBubbling();
     }
 
     // PRECONDITION:
