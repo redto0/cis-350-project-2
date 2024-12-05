@@ -1,18 +1,14 @@
-buy 100  3.29  123456
 print buy
 sell 20    3.50  234578
 print sell
-buy 10    3.55  156782
-print buy
+sell 16     98.71   69
+sell 1178   99.66   56
+sell 99     100.44  42
+sell 168    99.99   212
+sell 926    99.81   512
+sell 1119   100.29  31415
+sell 991    100.70  271415
+sell 1020   100.29  80083
 print sell
-sell 50    3.35  234578
-print sell
-buy 200  3.32  234578
-print buy
-buy 60    3.33  190874
-print buy
-sell 60    3.63  190874
-print sell
-sell 250   3.30 562890
-print buy
+buy 902     99.94   4
 print sell

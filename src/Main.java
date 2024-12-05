@@ -542,6 +542,7 @@ class Heap extends CompleteBT {
     public void removeMin() {
         // NAME: <Alexander Boccaccio>
         // Your code here
+        if( this.n == 0) return;
         this.remove();
         this.downHeapBubbling();
     }
